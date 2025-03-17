@@ -1,15 +1,13 @@
 package entity;
 
-import static utilz.Constants.PlayerConstants.DOWN;
-import static utilz.Constants.PlayerConstants.LEFT;
-import static utilz.Constants.PlayerConstants.RIGHT;
-import static utilz.Constants.PlayerConstants.UP;
+import static utilz.Constants.Directions.*;
 
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import entity.inventory.Inventory;
 import gamestates.Overworld;
 import graphics.GraphicsHelp;
 import graphics.TextBox;
@@ -37,6 +35,9 @@ public abstract class GameCharacter extends Entity{
 	
 	protected boolean activeInteraction = false;
 	protected TextBox textBox;
+	
+	protected Inventory inventory;
+	protected Stats stats;
 
 	protected void defaultInit(float x, float y, int width, int height, int spriteRowIndex) {
 		this.x = x;
@@ -51,6 +52,9 @@ public abstract class GameCharacter extends Entity{
 		this.hitbox = new Rectangle2D.Float(x + xDrawOffset, y + yDrawOffset, hitboxWidth, hitboxHeight);
 
 		loadSprites(spriteRowIndex);
+		
+		inventory = new Inventory();
+		stats = new Stats();
 	}
 
 	public void update() {
@@ -190,6 +194,18 @@ public abstract class GameCharacter extends Entity{
 	
 	public void renderTextBox(Graphics g) {
 	
+	}
+	
+	public Inventory getInventory() {
+		return inventory;
+	}
+	
+	public Stats getStats() {
+		return stats;
+	}
+	
+	public BufferedImage[][] getSprites(){
+		return sprites;
 	}
 
 }

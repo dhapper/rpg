@@ -32,7 +32,7 @@ public class LocationManager {
 	private Animation[] animations;
 	private ArrayList<EnvironmentObject> objects;
 	private ArrayList<GameCharacter> characterList;
-	private ArrayList<int[][]> layers;
+	//private ArrayList<int[][]> layers;
 
 	public LocationManager (Overworld overworld) {
 		this.overworld = overworld;
@@ -62,13 +62,15 @@ public class LocationManager {
 	}
 
 	public void loadObjects() {
+		int ladderID = 0;
 		objects = new ArrayList<EnvironmentObject>();
 		for(int i = 0; i < overworld.getLayers().get(0).length; i++) {
 			for(int j = 0; j < overworld.getLayers().get(0)[0].length; j++) {
 				int spriteIndex = overworld.getLayers().get(OBJECT_LAYER)[i][j];
 				if(spriteIndex != -1) {
 					if(spriteIndex == 4) {	//ladder
-						objects.add(new Ladder(i*Game.TILES_SIZE, j*Game.TILES_SIZE, spriteIndex));
+						objects.add(new Ladder(i*Game.TILES_SIZE, j*Game.TILES_SIZE, spriteIndex, overworld.getLocationIndex()*10 + ladderID));
+						ladderID++;
 					}else {
 						objects.add(new EnvironmentObject(i*Game.TILES_SIZE, j*Game.TILES_SIZE, spriteIndex));
 					}

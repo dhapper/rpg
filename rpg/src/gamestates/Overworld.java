@@ -1,6 +1,7 @@
 package gamestates;
 
 import java.awt.Graphics;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import entity.Player;
 import gamestates.overworld.Camera;
 import gamestates.overworld.OverworldHelper;
 import gamestates.overworld.OverworldInputs;
+import location.ExitZone;
 import location.LocationData;
 import location.LocationManager;
 import main.Game;
@@ -30,16 +32,26 @@ public class Overworld extends State implements StateMethods {
 	private boolean inTextBox = false;
 	private NPC activeNPC;
 	
+	private int locationIndex;
+	
+	private ArrayList<ExitZone> exitZones;
+	
+	private Transition transition;
+
+	private boolean initialLoad = true;
+	
 	public Overworld(Game game) {
 		super(game);
 		this.game = game;
 
 		locationManager = new LocationManager(this);
-
-		initMap(0);
+		transition = new Transition();
+		
+		initMap(0, 2 * Game.TILES_SIZE, 2 * Game.TILES_SIZE);
 	}
 
-	public void initMap(int locationIndex) {
+	public void initMap(int locationIndex, int x, int y) {
+		this.locationIndex = locationIndex;
 		layers = LocationManager.LoadLocation(locationIndex);
 		camera = new Camera(layers.get(0).length, layers.get(0)[0].length);
 
@@ -47,10 +59,11 @@ public class Overworld extends State implements StateMethods {
 		
 		locationManager.getCharacterList().clear();
 		
-		game.setPlayer(new Player(0, 0, Game.TILES_SIZE, Game.TILES_SIZE));
+		game.setPlayer(new Player(x, y, Game.TILES_SIZE, Game.TILES_SIZE));
 		game.getPlayer().setOverworldVars(this);
 		locationManager.getCharacterList().add(game.getPlayer());
 		
+		exitZones = new ArrayList<ExitZone>();
 		LocationData.LoadLocationData(locationIndex, this);
 
 		for(EnvironmentObject object : locationManager.getObjects()) {
@@ -68,10 +81,17 @@ public class Overworld extends State implements StateMethods {
 
 	@Override
 	public void update() {
+		
+		charactersSortedByY = OverworldHelper.orderCharactersByHeight(locationManager.getCharacterList());
+		
+		if (transition.isActive()) {
+	        transition.update();
+	        return; // Stop updating the game when transitioning
+	    }
 
 		if(paused) {
 			for(GameCharacter gc : charactersSortedByY)
-				if(gc.getActiveInteraction()) {
+				if(gc.getActiveInteraction() && gc.getTextBox() != null) {
 					gc.update();
 				}
 			
@@ -83,25 +103,39 @@ public class Overworld extends State implements StateMethods {
 
 		locationManager.update();
 
-		charactersSortedByY = OverworldHelper.orderCharactersByHeight(locationManager.getCharacterList());
-
 		camera.checkCloseToBorder(game.getPlayer());
+		
+		for(ExitZone ez : exitZones) {
+			if(ez.getZone().intersects(game.getPlayer().getHitbox())) {
+				transition.startTransition(() -> ez.enter());
+			}
+		}
 
 	}
+	
 
 	@Override
 	public void draw(Graphics g) {
 		
 		locationManager.draw(g, camera.getxLocationOffset(), camera.getyLocationOffset());
 
+		if(Game.DEV_MODE || SHOW_HITBOXES)	
+			for(ExitZone ez : exitZones)
+				ez.draw(g);
+		
 		for(GameCharacter gc : charactersSortedByY)
 			gc.render(g, camera.getxLocationOffset(), camera.getyLocationOffset());
 		
-		if(paused)
+		
+			
+		if(paused) {
 			for(GameCharacter gc : charactersSortedByY)
 				if(gc.getActiveInteraction())
 					if(gc.getTextBox() != null)
 						gc.getTextBox().draw(g);
+		}
+		
+		transition.draw(g);
 
 	}
 
@@ -166,7 +200,20 @@ public class Overworld extends State implements StateMethods {
 	}
 	
 	public void setActiveNPC(NPC activeNPC) {
+		game.getBattle().setPlayer2(activeNPC);
 		this.activeNPC = activeNPC;
+	}
+	
+	public int getLocationIndex() {
+		return locationIndex;
+	}
+	
+	public ArrayList<ExitZone> getExitZones() {
+		return exitZones;
+	}
+
+	public Transition getTransition() {
+		return transition;
 	}
 
 }

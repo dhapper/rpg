@@ -3,9 +3,11 @@ package utilz;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import main.Game;
+
 public class Constants {
 
-	public static class PlayerConstants{
+	public static class Directions{
 		public static final int DOWN = 0;
 		public static final int LEFT = 1;
 		public static final int UP = 2;
@@ -46,6 +48,49 @@ public class Constants {
 		public static final int WATER_REST_DURATION = 500;
 		public static final int WATER_MOVE_DURATION = 30;
 		public static final int WATER_EDGE_DURATION = 100;
+	}
+	
+	public static class BattleGraphicConstants{
+		public static int X_OFFSET_ARMOUR = Game.TILES_SIZE * 2;
+		public static int X_OFFSET_ITEMS = Game.TILES_SIZE * 4;
+		public static int X_OFFSET_PLAYER = Game.TILES_SIZE * 4;
+		public static int Y_OFFSET_PLAYER = (int) (Game.TILES_SIZE * 4.5);
+		public static int PLAYER_SIZE = Game.TILES_SIZE * 2;
+		public static int ITEM_SIZE = Game.TILES_SIZE;
+		public static int X_ADJUST_PLAYER = Game.GAME_WIDTH - PLAYER_SIZE;
+		public static int X_ADJUST_ITEM = Game.GAME_WIDTH - ITEM_SIZE;
+		public static int Y_OFFSET_1 = ITEM_SIZE * 2;
+		public static int Y_OFFSET_2 = ITEM_SIZE * 4;
+		public static int Y_OFFSET_3 = ITEM_SIZE * 6;
+		public static int Y_OFFSET_4 = ITEM_SIZE * 8;
+		
+		public static int MARGIN = (int) (2 * Game.SCALE);
+		public static int BORDER = (int) (1 * Game.SCALE);
+		
+		public static int X_BAR_OFFSET = Game.TILES_SIZE * 2 - MARGIN;
+		public static int HEALTH_BAR_HEIGHT = (int) (Game.SCALE * 6);
+		public static int STAMINA_BAR_HEIGHT = (int) (Game.SCALE * 6);
+		public static int Y_HEALTH_BAR_OFFSET = (int) (Game.SCALE * 3); 
+		public static int Y_STAMINA_BAR_OFFSET = Y_HEALTH_BAR_OFFSET + HEALTH_BAR_HEIGHT;
+		public static int Y_ESSENCE_BAR_OFFSET = Y_STAMINA_BAR_OFFSET + STAMINA_BAR_HEIGHT;
+		public static int BAR_WIDTH = Game.TILES_SIZE * 4;
+		public static int X_ADJUST_BAR = Game.GAME_WIDTH - BAR_WIDTH;
+		
+		public static int X_EXIT_OFFSET = 0;
+		public static int Y_EXIT_OFFSET = 0;
+		public static int EXIT_SIZE = Game.TILES_SIZE;
+		
+	}
+	
+	public static class BattleLogicConstants{
+		public static int HELM_BUTTON_INDEX = 0;
+		public static int CHESTPIECE_BUTTON_INDEX = 1;
+		public static int LEGGINGS_BUTTON_INDEX = 2;
+		public static int FOOTWEAR_BUTTON_INDEX = 3;
+		public static int SWORD_BUTTON_INDEX = 4;
+		public static int SHIELD_BUTTON_INDEX = 5;
+		
+		public static int EXIT_BUTTON_INDEX = 6;
 	}
 
 }

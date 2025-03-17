@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import entity.Player;
+import gamestates.Battle;
 import gamestates.GameState;
 import gamestates.Overworld;
 
@@ -14,7 +15,9 @@ public class Game implements Runnable {
     private Thread gameThread;
 
     // gamestates
-    private Overworld overworld;private Player player;
+    private Overworld overworld;
+    private Battle battle;
+    private Player player;
 
     // specs
     private final int FPS_SET = 120;
@@ -43,6 +46,7 @@ public class Game implements Runnable {
 
 	 private void initClasses() {
         overworld = new Overworld(this);
+        battle = new Battle(this);
 
     }
 
@@ -58,6 +62,9 @@ public class Game implements Runnable {
         case OVERWORLD:
             overworld.update();
             break;
+        case BATTLE:
+            battle.update();
+            break;
         default:
             break;
 		}
@@ -70,6 +77,9 @@ public class Game implements Runnable {
 		switch (GameState.state) {
         case OVERWORLD:
             overworld.draw(g);
+            break;
+        case BATTLE:
+            battle.draw(g);
             break;
         default:
             break;
@@ -117,6 +127,10 @@ public class Game implements Runnable {
 
 	public Overworld getOverworld() {
 		return overworld;
+	}
+	
+	public Battle getBattle() {
+		return battle;
 	}
 
 	public Player getPlayer() {

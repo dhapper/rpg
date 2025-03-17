@@ -3,6 +3,7 @@ package gamestates.overworld;
 import java.awt.event.KeyEvent;
 
 import entity.Player;
+import gamestates.GameState;
 import gamestates.Overworld;
 import location.LocationManager;
 
@@ -47,7 +48,15 @@ public class OverworldInputs {
 					overworld.getActiveNPC().getTextBox().completeTextDisplay();
 				}
 			}
+			break;
+		
+		
+		case KeyEvent.VK_1:
+			overworld.getGame().getBattle().initBattle();
+			GameState.state = GameState.BATTLE;
+			break;
 		}
+			
 
 	}
 

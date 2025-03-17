@@ -4,6 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import gamestates.GameState;
 import main.GamePanel;
 
 public class MouseInputs implements MouseListener, MouseMotionListener{
@@ -22,7 +23,17 @@ private GamePanel gamePanel;
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
+		
+		switch(GameState.state) {
+		case OVERWORLD:
+			gamePanel.getGame().getOverworld().mouseMoved(e);
+			break;
+		case BATTLE:
+			gamePanel.getGame().getBattle().mouseMoved(e);
+			break;
+		default:
+			break;
+		}
 
 	}
 
@@ -34,7 +45,17 @@ private GamePanel gamePanel;
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		
+		switch(GameState.state) {
+		case OVERWORLD:
+			gamePanel.getGame().getOverworld().mousePressed(e);
+			break;
+		case BATTLE:
+			gamePanel.getGame().getBattle().mousePressed(e);
+			break;
+		default:
+			break;
+		}
 
 	}
 

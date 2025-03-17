@@ -1,11 +1,11 @@
 package location;
 
-import java.util.ArrayList;
-
 import entity.NPC;
-import entity.Player;
+
 import gamestates.Overworld;
 import main.Game;
+
+import static utilz.Constants.Directions.*;
 
 public class LocationData {
 
@@ -15,7 +15,6 @@ public class LocationData {
 		
 		switch(locationIndex) {
 		case 0:
-			overworld.getGame().getPlayer().setPos(2 * Game.TILES_SIZE, 2 * Game.TILES_SIZE);
 			
 			npc = new NPC(8*Game.TILES_SIZE, 3*Game.TILES_SIZE, Game.TILES_SIZE, Game.TILES_SIZE, 1);
 			npc.setOverworldVars(overworld);
@@ -23,12 +22,15 @@ public class LocationData {
 
 			break;
 		case 1:
-			overworld.getGame().getPlayer().setPos(3 * Game.TILES_SIZE, 1 * Game.TILES_SIZE);
 			
-			npc = new NPC(10*Game.TILES_SIZE, 5*Game.TILES_SIZE, Game.TILES_SIZE, Game.TILES_SIZE, 2);
+			npc = new NPC(12*Game.TILES_SIZE, 8*Game.TILES_SIZE, Game.TILES_SIZE, Game.TILES_SIZE, 2);
 			npc.setOverworldVars(overworld);
 			overworld.getLocationManager().getCharacterList().add(npc);
 
+			// exit zones
+			overworld.getExitZones().add(new ExitZone(0, RIGHT, Game.TILES_SIZE * 15, Game.TILES_SIZE * 1, Game.TILES_SIZE * 2, Game.TILES_SIZE * 2, overworld));
+			overworld.getExitZones().add(new ExitZone(0, UP, Game.TILES_SIZE * 3, Game.TILES_SIZE * 0, Game.TILES_SIZE * 9, Game.TILES_SIZE * 6, overworld));
+			
 			break;
 		}
 	}
